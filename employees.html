@@ -1,22 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-900">
+<html lang="en" class="bg-gray-900 text-white">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employees</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style type="text/tailwindcss">
+    .glass {
+      backdrop-filter: blur(8px);
+      background-color: rgba(31, 41, 55, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,.18);
+    }
+    .ledgr-header { @apply w-full max-w-2xl mx-auto px-4 pt-7 pb-5 flex items-center justify-between; }
+    .ledgr-logo { @apply text-2xl font-black tracking-tight select-none flex items-center; }
+    .ledgr-nav { @apply flex gap-3 items-center; }
+    .nav-btn { @apply bg-gray-800/70 hover:bg-gray-700 text-white/80 hover:text-green-400 transition rounded-xl px-5 h-12 flex items-center font-semibold text-base shadow border border-gray-700 justify-center; }
+  </style>
 </head>
-<body class="min-h-full flex flex-col text-gray-100">
-  <nav class="fixed inset-x-0 top-0 bg-gray-800/60 backdrop-blur border-b border-gray-700 z-10">
-    <div class="max-w-3xl mx-auto px-4 py-3 flex space-x-4">
-      <a href="index.html" class="hover:text-white">Home</a>
-      <a href="calculate.html" class="hover:text-white">Calculate Pay</a>
-      <a href="employees.html" class="hover:text-white">Employees</a>
-    </div>
-  </nav>
-  <main class="flex-grow pt-20 px-4">
-    <div class="max-w-xl mx-auto bg-white/10 backdrop-blur rounded-lg p-6 shadow-lg">
-      <h1 class="text-2xl font-bold mb-4 text-center">Employees</h1>
+<body class="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 min-h-screen font-sans">
+  <header class="ledgr-header">
+    <span class="ledgr-logo">
+      <svg width="28" height="28" fill="none" class="mr-2"><rect width="100%" height="100%" rx="8" fill="#22c55e"/><text x="8" y="20" font-family="Arial" font-size="16" fill="#fff" font-weight="bold">L</text></svg>
+      Ledgr
+    </span>
+    <nav class="ledgr-nav">
+      <a href="index.html" class="nav-btn">Home</a>
+      <a href="calculate.html" class="nav-btn">Calculator</a>
+      <a href="employees.html" class="nav-btn">Employees</a>
+      <a href="payslip.html" class="nav-btn">Payslip</a>
+    </nav>
+  </header>
+  <main class="w-full max-w-2xl mx-auto px-4 fade-in">
+    <div class="glass rounded-2xl p-6 mt-4">
+      <h1 class="text-3xl font-bold mb-4 text-center">Employees</h1>
       <form id="employee-form" class="space-y-2 mb-4" onsubmit="submitForm(event)">
         <input id="emp-name" required placeholder="Name" class="w-full bg-gray-800 border-gray-700 rounded p-2" />
         <input id="emp-position" required placeholder="Position" class="w-full bg-gray-800 border-gray-700 rounded p-2" />
@@ -36,7 +53,7 @@
       </table>
     </div>
   </main>
-  <footer class="text-center py-6 text-gray-400">&copy; 2024 Payroll System</footer>
+  <footer class="text-center text-gray-500 py-6">&copy; 2024 Ledgr Payroll</footer>
   <script>
     const defaultEmployees = [
       {name: 'John Doe', position: 'Developer', rate: 35},

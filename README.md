@@ -1,6 +1,6 @@
 # NZ Payroll System
 
-A tiny demo payroll system for New Zealand built with standalone HTML pages and Tailwind CSS. All pages can be opened directly in a browser.
+A tiny demo payroll system for New Zealand built with standalone HTML pages and Tailwind CSS. All pages share the dark **Ledgr** theme with a floating header and glass panels. They can be opened directly in a browser.
 
 ## Pages
 - `index.html` - Home page
