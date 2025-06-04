@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900 text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employees</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style type="text/tailwindcss">
+    .glass {
+      backdrop-filter: blur(8px);
+      background-color: rgba(31, 41, 55, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,.18);
+    }
+    .ledgr-header { @apply w-full max-w-2xl mx-auto px-4 pt-7 pb-5 flex items-center justify-between; }
+    .ledgr-logo { @apply text-2xl font-black tracking-tight select-none flex items-center; }
+    .ledgr-nav { @apply flex gap-3 items-center; }
+    .nav-btn { @apply bg-gray-800/70 hover:bg-gray-700 text-white/80 hover:text-green-400 transition rounded-xl px-5 h-12 flex items-center font-semibold text-base shadow border border-gray-700 justify-center; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 min-h-screen font-sans">
+  <header class="ledgr-header">
+    <span class="ledgr-logo">
+      <svg width="28" height="28" fill="none" class="mr-2"><rect width="100%" height="100%" rx="8" fill="#22c55e"/><text x="8" y="20" font-family="Arial" font-size="16" fill="#fff" font-weight="bold">L</text></svg>
+      Ledgr
+    </span>
+    <nav class="ledgr-nav">
+      <a href="index.html" class="nav-btn">Home</a>
+      <a href="calculate.html" class="nav-btn">Calculator</a>
+      <a href="employees.html" class="nav-btn">Employees</a>
+      <a href="payslip.html" class="nav-btn">Payslip</a>
+    </nav>
+  </header>
+  <main class="w-full max-w-2xl mx-auto px-4 fade-in">
+    <div class="glass rounded-2xl p-6 mt-4">
+      <h1 class="text-3xl font-bold mb-4 text-center">Employees</h1>
+      <form id="employee-form" class="space-y-2 mb-4" onsubmit="submitForm(event)">
+        <input id="emp-name" required placeholder="Name" class="w-full bg-gray-800 border-gray-700 rounded p-2" />
+        <input id="emp-position" required placeholder="Position" class="w-full bg-gray-800 border-gray-700 rounded p-2" />
+        <input id="emp-rate" required type="number" step="0.01" placeholder="Hourly Rate" class="w-full bg-gray-800 border-gray-700 rounded p-2" />
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 rounded px-4 py-2">Save</button>
+      </form>
+      <table class="min-w-full bg-gray-800 rounded">
+        <thead>
+          <tr>
+            <th class="p-2 text-left">Name</th>
+            <th class="p-2 text-left">Position</th>
+            <th class="p-2 text-left">Rate</th>
+            <th class="p-2"></th>
+          </tr>
+        </thead>
+        <tbody id="employee-list"></tbody>
+      </table>
+    </div>
+  </main>
+  <footer class="text-center text-gray-500 py-6">&copy; 2024 Ledgr Payroll</footer>
+  <script>
+    const defaultEmployees = [
+      {name: 'John Doe', position: 'Developer', rate: 35},
+      {name: 'Jane Smith', position: 'Designer', rate: 30}
+    ];
+    let employees = JSON.parse(localStorage.getItem('employees')) || defaultEmployees;
+    function save(){
+      localStorage.setItem('employees', JSON.stringify(employees));
+    }
+    function render(){
+      const tbody = document.getElementById('employee-list');
+      tbody.innerHTML = '';
+      employees.forEach((emp,i)=>{
+        const row = document.createElement('tr');
+        row.innerHTML = `<td class="p-2">${emp.name}</td><td class="p-2">${emp.position}</td><td class="p-2">$${emp.rate}</td><td class="p-2"><button onclick="editEmployee(${i})" class="text-blue-400">Edit</button></td>`;
+        tbody.appendChild(row);
+      });
+    }
+    let editIndex = null;
+    function submitForm(e){
+      e.preventDefault();
+      const name = document.getElementById('emp-name').value;
+      const position = document.getElementById('emp-position').value;
+      const rate = parseFloat(document.getElementById('emp-rate').value);
+      if(editIndex !== null){
+        employees[editIndex] = {name, position, rate};
+        editIndex = null;
+      } else {
+        employees.push({name, position, rate});
+      }
+      save();
+      render();
+      e.target.reset();
+    }
+    function editEmployee(i){
+      const emp = employees[i];
+      document.getElementById('emp-name').value = emp.name;
+      document.getElementById('emp-position').value = emp.position;
+      document.getElementById('emp-rate').value = emp.rate;
+      editIndex = i;
+    }
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>

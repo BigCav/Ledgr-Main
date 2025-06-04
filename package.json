@@ -1,0 +1,8 @@
+{
+  "name": "nz-payroll-system",
+  "version": "1.0.0",
+  "description": "Simple dark-themed payroll system demo for New Zealand.",
+  "scripts": {
+    "test": "node test/calculate.test.js"
+  }
+}
