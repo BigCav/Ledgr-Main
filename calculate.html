@@ -1,51 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full bg-gray-900">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Calculate Pay</title>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script>
-function calculate() {
-  const hours = parseFloat(document.getElementById('hours').value) || 0;
-  const rate = parseFloat(document.getElementById('rate').value) || 0;
-  const gross = hours * rate;
-  const tax = gross * 0.2; // simplified 20% PAYE
-  const net = gross - tax;
-  document.getElementById('gross').textContent = gross.toFixed(2);
-  document.getElementById('tax').textContent = tax.toFixed(2);
-  document.getElementById('net').textContent = net.toFixed(2);
-}
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculate Pay</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-full flex flex-col">
-<header class="bg-gray-800 p-4">
-<h1 class="text-2xl font-bold">NZ Payroll System</h1>
-<nav class="mt-2 space-x-4">
-<a href="index.html" class="text-blue-400">Home</a>
-<a href="calculate.html" class="text-blue-400">Calculate Pay</a>
-<a href="employees.html" class="text-blue-400">Employees</a>
-</nav>
-</header>
-<main class="flex-grow p-4">
-<h2 class="text-xl mb-4">Calculate Pay</h2>
-<div class="space-y-4 max-w-md">
-<label class="block">Hours worked
-<input type="number" id="hours" class="mt-1 w-full bg-gray-800 border-gray-700 rounded p-2" />
-</label>
-<label class="block">Hourly rate ($)
-<input type="number" id="rate" class="mt-1 w-full bg-gray-800 border-gray-700 rounded p-2" />
-</label>
-<button onclick="calculate()" class="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2">Calculate</button>
-</div>
-<div class="mt-6">
-<p>Gross Pay: $<span id="gross">0.00</span></p>
-<p>Paye Tax (20%): $<span id="tax">0.00</span></p>
-<p>Net Pay: $<span id="net">0.00</span></p>
-</div>
-</main>
-<footer class="bg-gray-800 p-4 text-center">
-&copy; 2024 Payroll System
-</footer>
+<body class="min-h-full flex flex-col text-gray-100">
+  <nav class="fixed inset-x-0 top-0 bg-gray-800/60 backdrop-blur border-b border-gray-700 z-10">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex space-x-4">
+      <a href="index.html" class="hover:text-white">Home</a>
+      <a href="calculate.html" class="hover:text-white">Calculate Pay</a>
+      <a href="employees.html" class="hover:text-white">Employees</a>
+    </div>
+  </nav>
+  <main class="flex-grow pt-20 px-4">
+    <div class="max-w-xl mx-auto bg-white/10 backdrop-blur rounded-lg p-6 shadow-lg">
+      <h1 class="text-2xl font-bold mb-4 text-center">Calculate Pay</h1>
+      <div class="space-y-4">
+        <label class="block">Employee
+          <select id="employee" onchange="selectEmployee()" class="mt-1 w-full bg-gray-800 border-gray-700 rounded p-2"></select>
+        </label>
+        <label class="block">Hours worked
+          <input type="number" id="hours" class="mt-1 w-full bg-gray-800 border-gray-700 rounded p-2" />
+        </label>
+        <label class="block">Hourly rate ($)
+          <input type="number" id="rate" class="mt-1 w-full bg-gray-800 border-gray-700 rounded p-2" />
+        </label>
+        <button onclick="calculate()" class="bg-blue-600 hover:bg-blue-700 rounded px-4 py-2">Calculate</button>
+      </div>
+      <div class="mt-6 space-y-1">
+        <p>Gross Pay: $<span id="gross">0.00</span></p>
+        <p>PAYE Tax (20%): $<span id="tax">0.00</span></p>
+        <p>Net Pay: $<span id="net">0.00</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="text-center py-6 text-gray-400">&copy; 2024 Payroll System</footer>
+  <script>
+    const defaultEmployees = [
+      {name: 'John Doe', position: 'Developer', rate: 35},
+      {name: 'Jane Smith', position: 'Designer', rate: 30}
+    ];
+    let employees = JSON.parse(localStorage.getItem('employees')) || defaultEmployees;
+
+    function populateEmployees(){
+      const sel = document.getElementById('employee');
+      sel.innerHTML = '<option value="">Select</option>';
+      employees.forEach((emp,i)=>{
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = `${emp.name} - ${emp.position}`;
+        sel.appendChild(opt);
+      });
+    }
+    function selectEmployee(){
+      const idx = document.getElementById('employee').value;
+      if(idx !== ''){
+        document.getElementById('rate').value = employees[idx].rate;
+      }
+    }
+    function calculate(){
+      const hours = parseFloat(document.getElementById('hours').value)||0;
+      const rate = parseFloat(document.getElementById('rate').value)||0;
+      const gross = hours * rate;
+      const tax = gross * 0.2;
+      const net = gross - tax;
+      document.getElementById('gross').textContent = gross.toFixed(2);
+      document.getElementById('tax').textContent = tax.toFixed(2);
+      document.getElementById('net').textContent = net.toFixed(2);
+    }
+    document.addEventListener('DOMContentLoaded', populateEmployees);
+  </script>
 </body>
 </html>
