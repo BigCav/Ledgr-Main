@@ -12,3 +12,11 @@ Each page is a separate HTML file.
 - `payslip.html` - Example payslip
 
 Open any of the HTML files in a browser to view the pages.
+
+## Development
+
+Install Node dependencies (none are required) and run the test script:
+
+```bash
+npm test
+```
